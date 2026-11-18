@@ -33,6 +33,20 @@ jobs:
         run: |
           npm install --no-save --no-package-lock jsdom@26
           node tests/check-ui.cjs
+      - name: Check EXPOSE News page and publishing data
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root = Path('.')
+          data = json.loads((root/'data/news.json').read_text())
+          assert isinstance(data.get('posts'), list)
+          assert 'js/news.js' in (root/'news.html').read_text()
+          for page in ['index.html','about.html','our-project.html','database.html','countries.html','contact.html','thanks.html','news.html']:
+              s=(root/page).read_text()
+              assert 'href="news.html"' in s, page
+          print('News page, data format and navigation checked.')
+          PY
       - name: Check workbook coding matrix decodes
         run: |
           node - <<'NODE'
