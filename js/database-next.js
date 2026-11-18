@@ -329,27 +329,79 @@
   function renderMatrix(){
     $('mx-details').hidden=true;matrixDetailPair=null;
     var rowType=$('mx-row').value,colType=$('mx-col').value,
+      selectedCase=$('mx-case').value,selectedEpisode=$('mx-episode').value,
       rfilter=normal($('mx-row-search').value),cfilter=normal($('mx-col-search').value);
-    var rows=dims[rowType].filter(function(x){return normal(x.label).includes(rfilter);});
-    var cols=dims[colType].filter(function(x){return normal(x.label).includes(cfilter);});
     var table=$('mx-table');table.replaceChildren();
     if(rowType===colType){
       $('mx-summary').textContent='Select two different dimensions to compare.';
       return;
     }
+
+    // Case and Episode are different dimensions. A selected episode has its
+    // own scope; it must not show its sibling episodes or other case labels.
+    function inScope(dim,item){
+      if(dim==='cases'){
+        if(selectedCase && item.value!==selectedCase)return false;
+        if(selectedEpisode){
+          var chosen=episodeMap.get(selectedEpisode);
+          if(!chosen || String(chosen.caseId)!==item.value)return false;
+        }
+      }
+      if(dim==='episodes'){
+        if(selectedEpisode && item.value!==selectedEpisode)return false;
+        if(selectedCase){
+          var e=episodeMap.get(item.value);
+          if(!e || String(e.caseId)!==selectedCase)return false;
+        }
+      }
+      return true;
+    }
+
+    var rows=dims[rowType].filter(function(x){
+      return inScope(rowType,x) && normal(x.label).includes(rfilter);
+    });
+    var cols=dims[colType].filter(function(x){
+      return inScope(colType,x) && normal(x.label).includes(cfilter);
+    });
+
+    // Evaluate only scoped combinations. NO DATA means code 9 and is never
+    // silently changed into 0. The checkbox affects visibility, not coding.
+    var cells=rows.map(function(row){
+      return cols.map(function(col){
+        return cellValue(rowType,row.value,colType,col.value);
+      });
+    });
+    var showEmpty=$('mx-show-empty').checked;
+    var rowIndexes=rows.map(function(_,i){return i;});
+    var colIndexes=cols.map(function(_,i){return i;});
+    if(!showEmpty){
+      rowIndexes=rowIndexes.filter(function(i){
+        return cells[i].some(function(cell){return cell.code!==9;});
+      });
+      colIndexes=colIndexes.filter(function(j){
+        return rowIndexes.some(function(i){return cells[i][j].code!==9;});
+      });
+    }
+    var hiddenRows=rows.length-rowIndexes.length;
+    var hiddenCols=cols.length-colIndexes.length;
     var thead=make('thead'),hrow=make('tr');
     hrow.appendChild(make('th',rowType+' × '+colType,'db-matrix-corner'));
-    cols.forEach(function(col){var th=make('th',col.label);th.scope='col';hrow.appendChild(th);});
+    colIndexes.forEach(function(j){
+      var th=make('th',cols[j].label);
+      th.scope='col';hrow.appendChild(th);
+    });
     thead.appendChild(hrow);table.appendChild(thead);
     var tbody=make('tbody'),count={yes:0,no:0,na:0};
-    rows.forEach(function(row){
-      var tr=make('tr'),rh=make('th',row.label);rh.scope='row';tr.appendChild(rh);
-      cols.forEach(function(col){
-        var result=cellValue(rowType,row.value,colType,col.value);
+    rowIndexes.forEach(function(i){
+      var row=rows[i],tr=make('tr'),rh=make('th',row.label);
+      rh.scope='row';tr.appendChild(rh);
+      colIndexes.forEach(function(j){
+        var col=cols[j],result=cells[i][j];
         var label=result.code===1?'YES':result.code===0?'NO':'NO DATA';
         var td=make('td',null,'db-cell-'+(result.code===1?'yes':result.code===0?'no':'na'));
         if(result.code===1){
-          count.yes++;var btn=make('button','YES','db-yes-button');
+          count.yes++;
+          var btn=make('button','YES','db-yes-button');
           btn.type='button';
           btn.title='Open '+result.examples.length+' distinct supporting excerpt(s)';
           btn.setAttribute('aria-label','YES: '+row.label+' and '+col.label+'; open '+result.examples.length+' examples');
@@ -357,14 +409,25 @@
             showMatrixExamples(rowType,row.value,colType,col.value,result.examples);
           });
           td.appendChild(btn);
-        }else{count[result.code===0?'no':'na']++;td.appendChild(make('span',label));}
+        }else{
+          count[result.code===0?'no':'na']++;
+          td.appendChild(make('span',label));
+        }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);
-    $('mx-summary').textContent=rows.length+' rows × '+cols.length+' columns · '+count.yes+' YES · '+
-      count.no+' NO · '+count.na+' NO DATA. YES shows co-coded excerpts, not necessarily unique evasion incidents.';
+
+    var scopeLabel=selectedEpisode?'Episode '+selectedEpisode:
+      selectedCase?'Case '+selectedCase+' (all its episodes)':'All cases and episodes';
+    $('mx-summary').textContent=scopeLabel+' · '+rowIndexes.length+' rows × '+colIndexes.length+
+      ' columns · '+count.yes+' YES · '+count.no+' NO · '+count.na+' NO DATA.'+
+      (!showEmpty && (hiddenRows||hiddenCols) ?
+        ' Hidden because exclusively NO DATA: '+hiddenRows+' rows, '+hiddenCols+' columns. Use the checkbox to reveal them.' : '')+
+      (!rowIndexes.length || !colIndexes.length ?
+        ' No informative comparisons for this selection; enable "Show NO DATA-only rows and columns" to inspect unavailable coding.' : '')+
+      ' YES shows co-coded excerpts, not necessarily unique evasion incidents.';
   }
   function showMatrixExamples(rowType,rowValue,colType,colValue,examples){
     matrixDetailPair={rowType:rowType,rowValue:rowValue,colType:colType,colValue:colValue};
@@ -395,6 +458,7 @@
   });
   $('mx-case').addEventListener('change',function(){updateEpisodes('mx-case','mx-episode');renderMatrix();});
   $('mx-episode').addEventListener('change',renderMatrix);
+  $('mx-show-empty').addEventListener('change',renderMatrix);
 
   var currentView='search';
   function activate(view){
