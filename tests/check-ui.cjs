@@ -17,6 +17,22 @@ assert.strictEqual(Object.keys(w.EXPOSE_CODE_STATUS.episodeCodes).length,69);
 assert(w.document.querySelectorAll('#mx-table tbody tr').length>0,'Matrix should render rows');
 assert(w.document.querySelectorAll('#mx-table td').length>0,'Matrix should render cells');
 assert(w.document.querySelector('#ev-count').textContent.includes('excerpts'),'Search view should render excerpts');
+const query=w.document.getElementById('ev-keyword');
+query.value='sanctions';
+query.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert(w.document.getElementById('ev-count').textContent.includes('BM25 relevance order'),
+  'Coded evidence should use BM25 ranking for keyword searches');
+assert(w.document.getElementById('doc-count').textContent.includes('BM25 relevance order'),
+  'Episode documents should use BM25 ranking for keyword searches');
+assert(w.document.querySelector('#ev-records .db-card-meta').textContent.includes('BM25 '),
+  'Coded evidence cards should show BM25 relevance scores');
+assert(w.document.querySelector('#ev-documents .db-document-card').textContent.includes('BM25 '),
+  'Episode document cards should show BM25 relevance scores');
+query.value='';
+query.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert(w.document.getElementById('ev-count').textContent.includes('source order'),
+  'Empty keyword search should return to source order');
+
 const yes=w.document.querySelector('#mx-table button.db-yes-button');
 assert(yes,'Matrix should include at least one YES from real coded examples');
 yes.click();
