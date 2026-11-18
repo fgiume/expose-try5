@@ -48,9 +48,9 @@
           <div class="section-head">
             <span class="eyebrow">Research documents &middot; coded examples</span>
             <h2>Search the Evidence</h2>
-            <p>Search coded examples and the complete text of the project's episode documents. Use the filters to narrow the cases, sanctions, strategies and tactics you want to investigate.</p>
+            <p>Search coded examples and the complete text of the project's episode documents. Results are ranked by <strong>BM25 keyword relevance</strong>, with filters for cases, sanctions, strategies and tactics.</p>
           </div>
-          <div class="notice db-method-note"><strong>About the evidence.</strong> This tool uses EXPOSE research documents and coding, not internet search results. A document match means that a keyword occurs in that episode document; a coding filter selects documents containing at least one corresponding coded record. These need not be the same passage. The source documents are not the complete UN Panel of Experts reports.</div>
+          <div class="notice db-method-note"><strong>Search methodology.</strong> Both coded excerpts and episode documents use BM25 relevance ranking (k1 = 1.2, b = 0.75) when keywords are entered. Ranking reflects word frequency, rarity across the collection and document length, not evidentiary reliability. Stopwords are excluded and matching ignores case and accents. With an empty search, results appear in source order. <strong>About the evidence.</strong> This tool uses EXPOSE research documents and coding, not internet search results. A document match means that a keyword occurs in that episode document; a coding filter selects documents containing at least one corresponding coded record. These need not be the same passage. The source documents are not the complete UN Panel of Experts reports.</div>
           <div class="db-evidence-layout">
             <aside class="filters db-filter-panel" aria-label="Search filters">
               <label for="ev-keyword"><strong>Search words</strong></label><input id="ev-keyword" type="search" placeholder="e.g. false documentation" autocomplete="off">
