@@ -91,10 +91,10 @@
           </div>
           <p class="db-hint"><strong>Scope:</strong> A case includes all its episodes; selecting one episode restricts the comparison strictly to that episode. Uninformative rows and columns are hidden by default, but the missing-data values are preserved and can be displayed using the checkbox. <strong>Method:</strong> YES is evaluated at the individual source-excerpt level (Option B). NO and NO DATA use the project's episode-level <code>0 / 1 / 9</code> coding from Database 3.0. Missing information is never counted as NO. Repeated coding rows referring to the same excerpt are grouped as one example. Data collection ends 31 December 2025.</p>
           <div class="db-matrix-controls">
-            <div><label for="mx-row">Rows</label><select id="mx-row"><option value="sanctions">Sanctions</option><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="cases">Cases</option><option value="episodes">Episodes</option></select></div>
-            <div><label for="mx-col">Columns</label><select id="mx-col"><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="sanctions">Sanctions</option><option value="cases">Cases</option><option value="episodes">Episodes</option></select></div>
-            <div><label for="mx-case">Filter case</label><select id="mx-case"><option value="">All cases</option></select></div>
-            <div><label for="mx-episode">Filter episode</label><select id="mx-episode"><option value="">All episodes</option></select></div>
+            <div><label for="mx-row">Rows</label><select id="mx-row"><option value="sanctions">Sanctions</option><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="cases">Country cases (all episodes)</option><option value="episodes">Individual episodes</option></select></div>
+            <div><label for="mx-col">Columns</label><select id="mx-col"><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="sanctions">Sanctions</option><option value="cases">Country cases (all episodes)</option><option value="episodes">Individual episodes</option></select></div>
+            <div><label for="mx-case">Country case (all episodes)</label><select id="mx-case"><option value="">All cases</option></select></div>
+            <div><label for="mx-episode">Specific episode</label><select id="mx-episode"><option value="">All episodes</option></select></div>
             <div><label for="mx-row-search">Find row</label><input type="search" id="mx-row-search" placeholder="Filter row names"></div>
             <div><label for="mx-col-search">Find column</label><input type="search" id="mx-col-search" placeholder="Filter column names"></div>
             <div class="db-matrix-toggle"><label for="mx-show-empty"><input type="checkbox" id="mx-show-empty"> Show NO DATA-only rows and columns</label></div>
