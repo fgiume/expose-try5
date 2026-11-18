@@ -29,6 +29,10 @@ jobs:
           assert 'data/cases.js' not in html
           print('Site files, document count and coded-data dependencies verified.')
           PY
+      - name: Test integrated Database UI
+        run: |
+          npm install --no-save --no-package-lock jsdom@26
+          node tests/check-ui.cjs
       - name: Check workbook coding matrix decodes
         run: |
           node - <<'NODE'
