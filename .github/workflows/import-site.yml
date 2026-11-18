@@ -12,18 +12,12 @@ jobs:
     steps:
       - name: Check out destination
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-      - name: Copy complete website from the public source repository
+      - name: Copy site, research data and documents
         run: |
           git clone --depth 1 https://github.com/fgiume/expose-try4.git /tmp/expose-source
-          cp -a /tmp/expose-source/. .
-          rm -rf .git
-          git init -b main
+          rsync -a --exclude='.git' --exclude='.github/workflows' /tmp/expose-source/ ./
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-          rm -f .github/workflows/import-site.yml
           git add -A
-          git commit -m "Import full EXPOSE website and research assets from try4"
-          git push --force origin main
+          git commit -m "Import complete EXPOSE site and research assets from try4"
+          git push origin HEAD:main
