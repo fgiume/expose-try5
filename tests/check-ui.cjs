@@ -11,6 +11,19 @@ for(const name of files){
   console.log('Evaluating',name);
   w.eval(fs.readFileSync(name,'utf8'));
 }
+// Search controls are above both result collections, and every original
+// filter remains available after the layout change.
+const evidenceView=w.document.getElementById('evidence-view');
+const searchPanel=w.document.querySelector('.db-search-panel');
+const resultsColumn=w.document.querySelector('.db-results-column');
+assert(searchPanel && resultsColumn,'Top search area and results must exist');
+assert(Boolean(searchPanel.compareDocumentPosition(resultsColumn) & w.Node.DOCUMENT_POSITION_FOLLOWING),
+  'Search controls must precede the results');
+for(const id of ['ev-keyword','ev-case','ev-episode','ev-status','ev-group',
+                 'ev-variable','ev-strategy','ev-tactic','ev-year','ev-match','ev-clear']){
+  assert(searchPanel.querySelector('#'+id),'Search filter missing: '+id);
+}
+assert(evidenceView.contains(searchPanel)&&evidenceView.contains(resultsColumn));
 assert.strictEqual(w.EXPOSE_CODED.episodes.length,69);
 assert.strictEqual(w.EXPOSE_SEARCH_INDEX.documents.length,69);
 assert.strictEqual(Object.keys(w.EXPOSE_CODE_STATUS.episodeCodes).length,69);
