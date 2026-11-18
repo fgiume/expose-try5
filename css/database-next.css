@@ -62,3 +62,8 @@
 #mx-all{margin-top:.8rem}
 @media(max-width:920px){.db-evidence-layout{grid-template-columns:1fr}.db-filter-panel{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}.db-filter-panel label{grid-column:span 1}.db-filter-panel input,.db-filter-panel select{grid-column:span 1}}
 @media(max-width:690px){.db-status-explainer{grid-template-columns:1fr}.db-matrix-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.db-filter-panel{display:flex}.db-view-tabs button{flex:1;padding:.75rem .4rem;font-size:.85rem}}
+
+/* Matrix: keep the NO DATA visibility toggle compact and readable. */
+.db-matrix-toggle{display:flex;align-items:center;min-height:42px}
+.db-matrix-toggle label{display:flex;align-items:center;gap:.55rem;margin:0;cursor:pointer;font-size:.88rem;line-height:1.45}
+.db-matrix-controls .db-matrix-toggle input[type="checkbox"]{width:auto;min-width:1rem;height:1rem;margin:0;flex:none}
