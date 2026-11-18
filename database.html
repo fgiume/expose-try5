@@ -89,7 +89,7 @@
             <div><strong>NO · 0</strong><p>No co-coded example is found in the selected scope where the coding is informative. This does not prove that evasion never occurred.</p></div>
             <div><strong>NO DATA · 9</strong><p>Insufficient information to assess the combination, including episodes with no relevant sanctions imposed or no information available.</p></div>
           </div>
-          <p class="db-hint"><strong>Method:</strong> YES is evaluated at the individual source-excerpt level (Option B). NO and NO DATA use the project's episode-level <code>0 / 1 / 9</code> coding from Database 3.0. Missing information is never counted as NO. Repeated coding rows referring to the same excerpt are grouped as one example. Data collection ends 31 December 2025.</p>
+          <p class="db-hint"><strong>Scope:</strong> A case includes all its episodes; selecting one episode restricts the comparison strictly to that episode. Uninformative rows and columns are hidden by default, but the missing-data values are preserved and can be displayed using the checkbox. <strong>Method:</strong> YES is evaluated at the individual source-excerpt level (Option B). NO and NO DATA use the project's episode-level <code>0 / 1 / 9</code> coding from Database 3.0. Missing information is never counted as NO. Repeated coding rows referring to the same excerpt are grouped as one example. Data collection ends 31 December 2025.</p>
           <div class="db-matrix-controls">
             <div><label for="mx-row">Rows</label><select id="mx-row"><option value="sanctions">Sanctions</option><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="cases">Cases</option><option value="episodes">Episodes</option></select></div>
             <div><label for="mx-col">Columns</label><select id="mx-col"><option value="strategies">Strategies</option><option value="tactics">Tactics</option><option value="sanctions">Sanctions</option><option value="cases">Cases</option><option value="episodes">Episodes</option></select></div>
@@ -97,6 +97,7 @@
             <div><label for="mx-episode">Filter episode</label><select id="mx-episode"><option value="">All episodes</option></select></div>
             <div><label for="mx-row-search">Find row</label><input type="search" id="mx-row-search" placeholder="Filter row names"></div>
             <div><label for="mx-col-search">Find column</label><input type="search" id="mx-col-search" placeholder="Filter column names"></div>
+            <div class="db-matrix-toggle"><label for="mx-show-empty"><input type="checkbox" id="mx-show-empty"> Show NO DATA-only rows and columns</label></div>
           </div>
           <div id="mx-summary" class="db-matrix-summary" role="status"></div>
           <div id="mx-scroll" class="db-matrix-scroll"><table id="mx-table" aria-label="EXPOSE evidence cross-tabulation"></table></div>
