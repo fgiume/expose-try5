@@ -85,6 +85,23 @@
     return Number(a.caseId)-Number(b.caseId) || a.episode.localeCompare(b.episode,undefined,{numeric:true});
   });
   var codedEvidence = evidence.filter(function(g){return g.recordType==='Coded example';});
+  // BM25 index of distinct coded excerpts, built once from EXPOSE research data.
+  // Index the evidence text and its own coding labels; never index external material.
+  var excerptIndex = ENGINE.build(evidence.map(function(g) {
+    return {
+      id:g.key, caseId:g.caseId, episode:g.episode, excerpt:g,
+      text:[g.text,g.caseName,g.episode,
+        Array.from(g.variableIds).map(formatExcerptVariable).join(' '),
+        Array.from(g.strategies).join(' '),
+        Array.from(g.tactics).join(' '),
+        Array.from(g.reports).join(' ')
+      ].join(' ')
+    };
+  }));
+  function formatExcerptVariable(id) {
+    var v = variableMap.get(id);
+    return v ? (v.variableId+' '+v.variable) : id;
+  }
   var tacticOptions = tacticNames.slice();
   unique(D.records.flatMap(function(r){return r.tactics || [];})).forEach(function(t){
     if(!tacticOptions.some(function(x){return normal(x)===normal(t);})) tacticOptions.push(t);
@@ -152,21 +169,15 @@
     if(!matchesPair(g,activePair))return false;
     return true;
   }
-  function keywordMatches(g,f){
-    if(!f.q)return true;
-    var terms=f.q.toLowerCase().split(/\s+/).filter(Boolean);
-    var searchText=normal(g.text+' '+g.caseName+' '+g.episode+' '+Array.from(g.tactics).join(' ')+
-        ' '+Array.from(g.strategies).join(' ')+
-        ' '+Array.from(g.variableIds).map(formatVar).join(' '));
-    return f.match==='all'?terms.every(function(t){return searchText.includes(normal(t));}):
-      terms.some(function(t){return searchText.includes(normal(t));});
-  }
-  function sourceCard(g,compact){
+  function sourceCard(g,compact,score){
     var a=make('article',null,'db-evidence-card');
     var meta=make('div',null,'db-card-meta');
     [g.caseName,'Episode '+g.episode,g.year||'Year unspecified',g.recordType].forEach(function(x){
       meta.appendChild(make('span',x,'badge'));
     });
+    if(typeof score==='number'&&Number.isFinite(score)){
+      meta.appendChild(make('span','BM25 '+score.toFixed(3),'badge'));
+    }
     a.append(meta,make('h4',g.text.slice(0,95)+(g.text.length>95?'…':'')));
     var tags=make('div',null,'db-tags');
     g.variableIds.forEach(function(x){tags.appendChild(make('span',formatVar(x),'db-chip'));});
@@ -192,11 +203,20 @@
   var recordLimit=15, documentLimit=10, lastEvidence=[],lastDocs=[];
   function renderEvidence(){
     var f=selectedFilters(),list=$('ev-records');
-    lastEvidence=evidence.filter(function(g){return recordMatches(g,f)&&keywordMatches(g,f);});
+    var scored = ENGINE.search(excerptIndex,f.q,{mode:f.match,sort:'relevance'});
+    // BM25 ranks the whole EXPOSE excerpt corpus; filters restrict those ranked results.
+    // An empty query keeps the source order instead of claiming any relevance ranking.
+    var ranked = f.q ? scored.rows.map(function(hit){
+      return {excerpt:hit.document.excerpt,score:hit.score};
+    }) : evidence.map(function(g){return {excerpt:g,score:null};});
+    lastEvidence=ranked.filter(function(hit){return recordMatches(hit.excerpt,f);});
     list.replaceChildren();
-    lastEvidence.slice(0,recordLimit).forEach(function(g){list.appendChild(sourceCard(g,false));});
+    lastEvidence.slice(0,recordLimit).forEach(function(hit){
+      list.appendChild(sourceCard(hit.excerpt,false,hit.score));
+    });
     if(!lastEvidence.length)list.appendChild(make('p','No coded excerpts match. Try broader filters or different search words.','empty'));
     $('ev-count').textContent=lastEvidence.length+' distinct excerpts · '+Math.min(lastEvidence.length,recordLimit)+' shown'+
+      (f.q?' · BM25 relevance order':' · source order')+
       (activePair?' · Pair filter active':'');
     $('ev-more').hidden=recordLimit>=lastEvidence.length;
     if(activePair){
@@ -225,7 +245,9 @@
     lastDocs.slice(0,documentLimit).forEach(function(result){
       var doc=result.document;
       var a=make('article',null,'db-document-card');
-      a.append(make('span',doc.case+' · Episode '+doc.id,'badge'),make('h4',doc.title));
+      a.append(make('span',doc.case+' · Episode '+doc.id,'badge'));
+      if(f.q)a.appendChild(make('span','BM25 '+result.score.toFixed(3),'badge'));
+      a.appendChild(make('h4',doc.title));
       a.appendChild(make('p',(doc.start||'Start not supplied')+' – '+(doc.end||'End not supplied'),'db-source-line'));
       var preview=String(doc.text||'').slice(0,450);
       if(f.q){
@@ -245,7 +267,8 @@
       a.appendChild(footer);list.appendChild(a);
     });
     if(!lastDocs.length)list.appendChild(make('p','No episode documents match these filters.','empty'));
-    $('doc-count').textContent=lastDocs.length+' episode documents · '+Math.min(documentLimit,lastDocs.length)+' shown';
+    $('doc-count').textContent=lastDocs.length+' episode documents · '+Math.min(documentLimit,lastDocs.length)+' shown'+
+      (f.q?' · BM25 relevance order':' · source order');
     $('doc-more').hidden=documentLimit>=lastDocs.length;
   }
   function resetEvidence(){
