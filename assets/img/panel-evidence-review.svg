@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-labelledby="title desc">
+<title id="title">A Panel of Experts examining evidence</title>
+<desc id="desc">A group of independent analysts works together around a table with reports, shipping routes, financial records and satellite evidence, reflecting the multidisciplinary work of United Nations sanctions experts.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#eef4f9"/><stop offset="1" stop-color="#e8edf5"/></linearGradient>
+ <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#142a44" flood-opacity=".15"/></filter>
+</defs>
+<rect width="720" height="520" rx="24" fill="url(#bg)"/>
+<!-- The evidence display is deliberately an investigation rather than an evasion scene -->
+<rect x="60" y="45" width="600" height="174" rx="16" fill="#fff" stroke="#cbdce7" stroke-width="3" filter="url(#shadow)"/>
+<rect x="60" y="45" width="600" height="38" rx="16" fill="#183958"/>
+<rect x="60" y="70" width="600" height="13" fill="#183958"/>
+<g font-family="Arial,sans-serif" fill="#fff" font-size="15" font-weight="700"><text x="82" y="70">EVIDENCE REVIEW</text></g>
+<!-- map network -->
+<path d="M110 134q50-37 103 5t102 3t105-30t143 34" stroke="#a6c3d5" stroke-width="6" fill="none" stroke-linecap="round"/>
+<path d="M133 173q64-6 105-33t100 27t101-16t122 17" stroke="#d6e2ed" stroke-width="18" fill="none" stroke-linecap="round"/>
+<path d="M133 173q64-6 105-33t100 27t101-16t122 17" stroke="#e4a14c" stroke-width="4" stroke-dasharray="8 10" fill="none" stroke-linecap="round"/>
+<g fill="#1f8fd6" stroke="#fff" stroke-width="4"><circle cx="133" cy="173" r="10"/><circle cx="238" cy="140" r="10"/><circle cx="338" cy="167" r="10"/><circle cx="439" cy="151" r="10"/><circle cx="561" cy="168" r="10"/></g>
+<g fill="#607d93"><rect x="83" y="97" width="98" height="7" rx="3"/><rect x="83" y="112" width="68" height="7" rx="3"/><rect x="528" y="99" width="103" height="7" rx="3"/><rect x="552" y="113" width="79" height="7" rx="3"/></g>
+<!-- worktable -->
+<g filter="url(#shadow)"><ellipse cx="365" cy="370" rx="302" ry="119" fill="#31566f"/></g>
+<ellipse cx="365" cy="358" rx="295" ry="101" fill="#fff" stroke="#ccdae4" stroke-width="4"/>
+<!-- multidisciplinary evidence sheets -->
+<g transform="translate(178 330) rotate(-11)">
+ <rect width="125" height="94" rx="7" fill="#e9f1f7" stroke="#9fb7c9"/>
+ <rect x="11" y="13" width="103" height="11" rx="3" fill="#244c69"/>
+ <g stroke="#91b0c2" stroke-width="6" stroke-linecap="round"><path d="M13 40h60"/><path d="M13 56h93"/><path d="M13 71h75"/></g>
+</g>
+<g transform="translate(395 325) rotate(9)">
+ <rect width="140" height="101" rx="7" fill="#eaf3f5" stroke="#9bbec8"/>
+ <path d="M18 73l27-29 23 12 35-32 18 24" fill="none" stroke="#2a9d8f" stroke-width="5"/>
+ <g fill="#e0a356"><circle cx="45" cy="44" r="6"/><circle cx="103" cy="24" r="6"/></g>
+ <g fill="#9bbbc9"><rect x="18" y="12" width="75" height="6" rx="3"/><rect x="18" y="84" width="107" height="6" rx="3"/></g>
+</g>
+<g transform="translate(311 335)">
+ <rect width="88" height="66" rx="7" fill="#183958" stroke="#10293f" stroke-width="3"/>
+ <rect x="8" y="8" width="72" height="47" rx="3" fill="#f4f9fc"/>
+ <path d="M20 41l14-13 15 6 17-16" fill="none" stroke="#299d9d" stroke-width="4"/>
+ <path d="M-9 65h105l9 12H-18z" fill="#92aebc"/>
+</g>
+<!-- analyst 1 -->
+<g transform="translate(124 220)">
+ <path d="M-65 124q4-74 64-76q65 2 78 82z" fill="#173957"/>
+ <rect x="-15" y="39" width="26" height="27" rx="9" fill="#c98963"/>
+ <ellipse cx="-3" cy="1" rx="37" ry="44" fill="#c98963"/>
+ <path d="M-38-9q-12-56 31-57q50 1 43 52q-23-14-43-34q-5 24-31 39" fill="#2b2c35"/>
+ <path d="M26 69q42 17 78 55" fill="none" stroke="#c98963" stroke-width="19" stroke-linecap="round"/>
+ <path d="M-24 71q-36 12-43 52" fill="none" stroke="#c98963" stroke-width="17" stroke-linecap="round"/>
+</g>
+<!-- analyst 2 -->
+<g transform="translate(348 208)">
+ <path d="M-65 124q7-82 66-80q63 1 72 82z" fill="#8f4164"/>
+ <rect x="-13" y="33" width="27" height="32" rx="9" fill="#e3ae87"/>
+ <ellipse cx="0" cy="0" rx="37" ry="45" fill="#e3ae87"/>
+ <path d="M-40 1q-10-68 37-68q49-1 42 68l-12-7q-11-26-33-34q-8 34-34 41" fill="#392f39"/>
+ <path d="M30 73q29 17 34 58" fill="none" stroke="#e3ae87" stroke-width="17" stroke-linecap="round"/>
+ <path d="M-23 75q-20 10-45 58" fill="none" stroke="#e3ae87" stroke-width="18" stroke-linecap="round"/>
+</g>
+<!-- analyst 3 -->
+<g transform="translate(572 222)">
+ <path d="M-65 122q8-77 63-78q64 0 75 80z" fill="#2b7482"/>
+ <rect x="-14" y="34" width="27" height="32" rx="9" fill="#ae7958"/>
+ <ellipse cx="0" cy="0" rx="36" ry="44" fill="#ae7958"/>
+ <path d="M-38-14q-6-54 37-52q47 0 39 52q-22-7-40-31q-13 22-36 31" fill="#292a32"/>
+ <path d="M-25 72q-37 17-64 55" fill="none" stroke="#ae7958" stroke-width="18" stroke-linecap="round"/>
+ <path d="M24 77q40 22 42 46" fill="none" stroke="#ae7958" stroke-width="17" stroke-linecap="round"/>
+</g>
+<!-- foreground documents and lens -->
+<g transform="translate(290 451) rotate(-7)">
+ <rect x="0" y="0" width="152" height="46" rx="6" fill="#fff" stroke="#bdcfdd" stroke-width="3"/>
+ <rect x="12" y="11" width="85" height="6" rx="3" fill="#b4c8d8"/>
+ <rect x="12" y="24" width="126" height="6" rx="3" fill="#b4c8d8"/>
+ <rect x="12" y="35" width="101" height="5" rx="3" fill="#e1bd67"/>
+</g>
+<g transform="translate(448 458)">
+ <circle cx="0" cy="0" r="19" fill="#e6f6fb" fill-opacity=".7" stroke="#234966" stroke-width="6"/>
+ <path d="M15 15l27 28" stroke="#234966" stroke-width="10" stroke-linecap="round"/>
+</g>
+</svg>
